@@ -5,7 +5,7 @@ remove_container() {
   return 0
 }
 
-run_container() {
+create_container() {
   docker run \
     --name seafile_test \
     --volume /etc/default/:/container-volume-a \
@@ -23,7 +23,7 @@ log() {
 }
 
 @test "--get-volumes: return one volume per line as source:destination" {
-  run_container
+  create_container
 
   run ./backups.bash --get-volumes "seafile_test"
   volumes_unsorted=($output)
