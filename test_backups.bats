@@ -30,7 +30,7 @@ log() {
   IFS=$'\n' volumes=($(sort <<<"${volumes_unsorted[*]}"))
 
   [[ ${#volumes[@]} == 2 ]]
-  [[ ${volumes[0]} == "/etc/default:/container-volume-"* ]]
+  [[ ${volumes[0]} == "/etc/default" ]]
 
   remove_container
 }
@@ -50,15 +50,21 @@ log() {
   [[ "$output" == "Error unknown argument." ]]
 }
 
-# @test "--create: create data-volume archive" {
-#   run_container
-#   date=$(date '+%Y-%m-%d')
-#   run ./backups.bash --create "seafile_test"
-#   log
-#   [ -e "/tmp/$date.data-seafile_test.tar.gz" ]
-#   remove_container
-# }
-#
+@test "--create: create data-volume archive" {
+  create_container
+  archive="/tmp/seafile_test.data-$(date '+%Y-%m-%d').tar.gz"
+
+  run ./backups.bash --create "seafile_test"
+
+  [[ -e "$archive" ]]
+  files_count="$(tar --list --file "$archive" | wc -l)"
+  (( $files_count > 2 ))
+  [[ $(stat -c '%U' "$archive") == "$USER" ]]
+
+  rm "$archive"
+  remove_container
+}
+
 # @test "--send: send archive to FTP" {
 #   run ./backups.bash --send "container_id"
 #
