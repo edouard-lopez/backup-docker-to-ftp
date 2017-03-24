@@ -1,16 +1,25 @@
 #!/usr/bin/env bats
 
 remove_container() {
-  docker rm --force seafile_test
+  docker rm --force mock_seafile || true
+  docker rm --force mock_ftp_server || true
   return 0
 }
 
-create_container() {
+create_mock_container() {
   docker run \
-    --name seafile_test \
+    --name mock_seafile \
     --volume /etc/default/:/container-volume-a \
     --volume /etc/docker/:/container-volume-b \
-  --detach  busybox &> /dev/null
+  --detach  busybox
+}
+
+create_mock_ftp_server() {
+  docker run \
+    --name mock_ftp_server \
+    --volume /etc/default/:/container-volume-a \
+    --volume /etc/docker/:/container-volume-b \
+  --detach  busybox
 }
 
 teardown() {
@@ -23,9 +32,9 @@ log() {
 }
 
 @test "--get-volumes: return one volume per line as source:destination" {
-  create_container
+  create_mock_container
 
-  run ./backups.bash --get-volumes "seafile_test"
+  run ./backups.bash --get-volumes "mock_seafile"
   volumes_unsorted=($output)
   IFS=$'\n' volumes=($(sort <<<"${volumes_unsorted[*]}"))
 
@@ -51,10 +60,10 @@ log() {
 }
 
 @test "--create: create data-volume archive" {
-  create_container
-  archive="/tmp/seafile_test.data-$(date '+%Y-%m-%d').tar.gz"
+  create_mock_container
+  archive="/tmp/mock_seafile.data-$(date '+%Y-%m-%d').tar.gz"
 
-  run ./backups.bash --create "seafile_test"
+  run ./backups.bash --create "mock_seafile"
 
   [[ -e "$archive" ]]
   files_count="$(tar --list --file "$archive" | wc -l)"
