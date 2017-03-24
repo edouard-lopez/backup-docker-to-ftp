@@ -1,8 +1,14 @@
 ## Usage
 
+prepare context
+
     export -x FTP_URL="ftp://backup.server.org"
     export -x FTP_USER="john-doe"
-    export -x FTP_PASSWORD="long-phrase-are-best"
+
+  Then run the command
+
+    FTP_PASSWORD="long-phrase-are-best" backups.bash
+
 
 ## Install
 
