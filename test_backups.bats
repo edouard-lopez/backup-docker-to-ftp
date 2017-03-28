@@ -61,18 +61,55 @@ log() {
   [[ "$output" == "Error unknown argument." ]]
 }
 
+@test "--create: return archive filepath" {
+  create_mock_container
+  container_name="mock_seafile"
+  archive_filepath="/tmp/$container_name.data-$(date '+%Y-%m-%d').tar.gz"
+
+  run ./backups.bash --create "$container_name"
+
+  last_line="${lines[@]:(-1)}"
+  [[ "$last_line" == "$archive_filepath" ]]
+
+  rm "$archive_filepath"
+  remove_container
+}
+
 @test "--create: create data-volume archive" {
   create_mock_container
-  archive="/tmp/mock_seafile.data-$(date '+%Y-%m-%d').tar.gz"
+  container_name="mock_seafile"
+  archive_filepath="/tmp/$container_name.data-$(date '+%Y-%m-%d').tar.gz"
 
-  run ./backups.bash --create "mock_seafile"
+  run ./backups.bash --create "$container_name"
 
-  [[ -e "$archive" ]]
-  files_count="$(tar --list --file "$archive" | wc -l)"
-  (( $files_count > 2 ))
-  [[ $(stat -c '%U' "$archive") == "$USER" ]]
+  [[ -e "$archive_filepath" ]]
 
-  rm "$archive"
+  rm "$archive_filepath"
+  remove_container
+}
+
+@test "--create: contains the files" {
+  create_mock_container
+  container_name="mock_seafile"
+  archive_filepath="/tmp/$container_name.data-$(date '+%Y-%m-%d').tar.gz"
+
+  run ./backups.bash --create "$container_name"
+
+  files_count="$(tar --list --file "$archive_filepath" | wc -l)"
+  (( $files_count == 2 ))
+  rm "$archive_filepath"
+  remove_container
+}
+
+@test "--create: set user on archive file" {
+  create_mock_container
+  container_name="mock_seafile"
+  archive_filepath="/tmp/$container_name.data-$(date '+%Y-%m-%d').tar.gz"
+
+  run ./backups.bash --create "$container_name"
+
+  [[ $(stat -c '%U' "$archive_filepath") == "$USER" ]]
+  rm "$archive_filepath"
   remove_container
 }
 

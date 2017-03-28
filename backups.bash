@@ -14,11 +14,13 @@ get_volumes() {
 create_archive() {
   local container_name="$1"
   local date
-  date="$(date '+%Y-%m-%d')"
   files="$(get_volumes "$container_name")"
+  filepath="/tmp/$container_name.data-$(date '+%Y-%m-%d').tar.gz"
 
-  sudo tar --create --gzip --file "/tmp/$container_name.data-$date.tar.gz" $files
-  sudo chown "$USER":"$USER" "/tmp/$container_name.data-$date.tar.gz"
+  sudo tar --create --gzip --file "$filepath" $files
+  sudo chown "$USER":"$USER" "$filepath"
+
+  echo "$filepath"
 }
 
 send_archive() {
