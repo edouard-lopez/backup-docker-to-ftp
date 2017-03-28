@@ -26,5 +26,4 @@ prepare context
 
 Pour tester le script de backup.
 
-    cd backups/
-    bats ./test_backups.bats
+    cd backups/ && bats ./test_backups.bats

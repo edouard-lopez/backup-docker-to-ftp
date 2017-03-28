@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 help() {
-  echo "Usage: [--create] container_id" >&2
+  echo "Usage: [--create|--get-volumes|--help] container_id" >&2
+  echo "Usage: [--send]" >&2
   exit 2
 }
 
