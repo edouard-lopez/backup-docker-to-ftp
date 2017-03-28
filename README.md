@@ -7,7 +7,7 @@ prepare context
 
   Then run the command
 
-    FTP_PASSWORD="long-phrase-are-best" backups.bash
+    FTP_PASSWORD="long-phrase-are-best" backup.bash
 
 
 ## Install
@@ -26,4 +26,4 @@ prepare context
 
 Pour tester le script de backup.
 
-    cd backups/ && bats ./test_backups.bats
+    cd backup/ && bats ./test_backup.bats

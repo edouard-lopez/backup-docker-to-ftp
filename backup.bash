@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 help() {
-  echo "Usage: [--create|--get-volumes|--help] container_id" >&2
-  echo "Usage: [--send]" >&2
+  echo "Usage: backup.bash [--create|--get-volumes|--help] container_id" >&2
+  echo "Usage: backup.bash --send ftp_host" >&2
   exit 2
 }
 
@@ -24,6 +24,10 @@ create_archive() {
 }
 
 send_archive() {
+  local archive_filepath="$1"
+  set -x
+  curl --upload-file $archive_filepath "ftp://$FTP_URL" --user "$FTP_USER":"$FTP_PASSWORD"
+  set +x
   echo "implement ftp"
 }
 

@@ -17,16 +17,17 @@ create_mock_container() {
 }
 
 create_mock_ftp_server() {
+  echo $FTP_USER $FTP_PASSWORD
   docker run \
     --name mock_ftp_server \
-    --volume /etc/default/:/container-volume-a \
-    --volume /etc/docker/:/container-volume-b \
-  --detach  busybox
+    --publish 21:21 \
+    --publish 4559-4564:4559-4564 \
+    --env FTP_USER="$FTP_USER" \
+    --env FTP_PASSWORD="$FTP_PASSWORD" \
+    --detach \
+  panubo/vsftpd
 }
 
-teardown() {
-  remove_container
-}
 
 log() {
   echo "$(tput setaf 6)status: ${status}$(tput sgr 0)"
@@ -36,7 +37,7 @@ log() {
 @test "--get-volumes: return one volume per line as source:destination" {
   create_mock_container
 
-  run ./backups.bash --get-volumes "mock_seafile"
+  run ./backup.bash --get-volumes "mock_seafile"
   volumes_unsorted=($output)
   IFS=$'\n' volumes=($(sort <<<"${volumes_unsorted[*]}"))
 
@@ -47,17 +48,17 @@ log() {
 }
 
 @test "--help: show help" {
-  run ./backups.bash --help
+  run ./backup.bash --help
   [[ "$output" == "Usage:"* ]]
 }
 
 @test "-h: show help" {
-  run ./backups.bash -h
+  run ./backup.bash -h
   [[ "$output" == "Usage:"* ]]
 }
 
 @test "--xyz: invalid argument" {
-  run ./backups.bash --xyz
+  run ./backup.bash --xyz
   [[ "$output" == "Error unknown argument." ]]
 }
 
@@ -66,7 +67,7 @@ log() {
   container_name="mock_seafile"
   archive_filepath="/tmp/$container_name.data-$(date '+%Y-%m-%d').tar.gz"
 
-  run ./backups.bash --create "$container_name"
+  run ./backup.bash --create "$container_name"
 
   last_line="${lines[@]:(-1)}"
   [[ "$last_line" == "$archive_filepath" ]]
@@ -80,7 +81,7 @@ log() {
   container_name="mock_seafile"
   archive_filepath="/tmp/$container_name.data-$(date '+%Y-%m-%d').tar.gz"
 
-  run ./backups.bash --create "$container_name"
+  run ./backup.bash --create "$container_name"
 
   [[ -e "$archive_filepath" ]]
 
@@ -93,7 +94,7 @@ log() {
   container_name="mock_seafile"
   archive_filepath="/tmp/$container_name.data-$(date '+%Y-%m-%d').tar.gz"
 
-  run ./backups.bash --create "$container_name"
+  run ./backup.bash --create "$container_name"
 
   files_count="$(tar --list --file "$archive_filepath" | wc -l)"
   (( $files_count == 2 ))
@@ -106,16 +107,9 @@ log() {
   container_name="mock_seafile"
   archive_filepath="/tmp/$container_name.data-$(date '+%Y-%m-%d').tar.gz"
 
-  run ./backups.bash --create "$container_name"
+  run ./backup.bash --create "$container_name"
 
   [[ $(stat -c '%U' "$archive_filepath") == "$USER" ]]
   rm "$archive_filepath"
   remove_container
 }
-
-# @test "--send: send archive to FTP" {
-#   run ./backups.bash --send "container_id"
-#
-#   echo "$output"
-#   [[ "$output" == "Usage:"* ]]
-# }
