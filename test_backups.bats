@@ -2,16 +2,18 @@
 
 remove_container() {
   docker rm --force mock_seafile || true
+  rm /tmp/directory-{a,b}
   docker rm --force mock_ftp_server || true
   return 0
 }
 
 create_mock_container() {
+  touch /tmp/directory-{a,b}
   docker run \
     --name mock_seafile \
-    --volume /etc/default/:/container-volume-a \
-    --volume /etc/docker/:/container-volume-b \
-  --detach  busybox
+    --volume /tmp/directory-a:/container-volume-a \
+    --volume /tmp/directory-b:/container-volume-b \
+  --detach busybox
 }
 
 create_mock_ftp_server() {
@@ -39,7 +41,7 @@ log() {
   IFS=$'\n' volumes=($(sort <<<"${volumes_unsorted[*]}"))
 
   [[ ${#volumes[@]} == 2 ]]
-  [[ ${volumes[0]} == "/etc/default" ]]
+  [[ ${volumes[0]} == "/tmp/directory-a" ]]
 
   remove_container
 }
