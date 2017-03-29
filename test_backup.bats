@@ -1,5 +1,8 @@
 #!/usr/bin/env bats
 
+export FTP_USER="test"
+export FTP_PASSWORD="test"
+
 remove_container() {
   docker rm --force mock_seafile || true
   rm /tmp/directory-{a,b}
@@ -17,7 +20,6 @@ create_mock_container() {
 }
 
 create_mock_ftp_server() {
-  echo $FTP_USER $FTP_PASSWORD
   docker run \
     --name mock_ftp_server \
     --publish 21:21 \
@@ -110,6 +112,23 @@ log() {
   run ./backup.bash --create "$container_name"
 
   [[ $(stat -c '%U' "$archive_filepath") == "$USER" ]]
+  rm "$archive_filepath"
+  remove_container
+}
+
+@test "--send: send archive to FTP" {
+  create_mock_container
+  create_mock_ftp_server
+  docker exec mock_ftp_server chown ftp:ftp -R /srv/
+  container_name="mock_seafile"
+  archive_filepath="/tmp/$container_name.data-$(date '+%Y-%m-%d').tar.gz"
+  ./backup.bash --create "$container_name"
+
+  FTP_HOST="localhost"
+  run ./backup.bash --send "$archive_filepath" "$FTP_HOST"
+
+  [[ $status == 0 ]]
+
   rm "$archive_filepath"
   remove_container
 }

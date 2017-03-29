@@ -2,7 +2,7 @@
 
 help() {
   echo "Usage: backup.bash [--create|--get-volumes|--help] container_id" >&2
-  echo "Usage: backup.bash --send ftp_host" >&2
+  echo "Usage: backup.bash --send archive.tar.gz ftp_host" >&2
   exit 2
 }
 
@@ -25,10 +25,8 @@ create_archive() {
 
 send_archive() {
   local archive_filepath="$1"
-  set -x
-  curl --upload-file $archive_filepath "ftp://$FTP_URL" --user "$FTP_USER":"$FTP_PASSWORD"
-  set +x
-  echo "implement ftp"
+  local ftp_host="$2"
+  curl --upload-file "$archive_filepath" "ftp://$ftp_host" --user "$FTP_USER":"$FTP_PASSWORD"
 }
 
 
@@ -40,7 +38,7 @@ while getopts "$optspec" optchar; do
             create)
               create_archive "${!#}";;
             send)
-              send_archive "${!#}";;
+              send_archive "${@:(-2)}";;
             get-volumes)
               get_volumes "${!#}";;
             help)
