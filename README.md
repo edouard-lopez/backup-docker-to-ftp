@@ -2,12 +2,15 @@
 
 prepare context
 
-    export -x FTP_URL="ftp://backup.server.org"
-    export -x FTP_USER="john-doe"
+    export FTP_USER="johndoe"
+    export FTP_PASSWORD="test"
+    export FTP_HOST="backup.server.org"
 
   Then run the command
 
-    FTP_PASSWORD="long-phrase-are-best" backup.bash
+    # container_id="1e52f28bb583"
+    archive_filepath=$(backup.bash --create $container_id)
+    backup.bash --send "$archive_filepath" FTP_HOST
 
 
 ## Install
@@ -20,10 +23,10 @@ prepare context
 * `docker` (for tests)
 
       docker pull busybox
-      docker pull stilliard/pure-ftpd
+      docker pull panubo/vsftpd
 
 ## Test
 
 Pour tester le script de backup.
 
-    cd backup/ && bats ./test_backup.bats
+    bats ./test_backup.bats
