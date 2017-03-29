@@ -1,4 +1,8 @@
-## Usage
+[![Build Status](https://travis-ci.org/edouard-lopez/backup-docker-to-ftp.svg?branch=master)](https://travis-ci.org/edouard-lopez/backup-docker-to-ftp)
+
+> Easily backup your docker container to a FTP server.
+
+### Usage
 
 prepare context
 
@@ -13,11 +17,11 @@ prepare context
     backup.bash --send "$archive_filepath" FTP_HOST
 
 
-## Install
+### Install
 
   todo
 
-## Requirement
+### Requirement
 
 * `curl`
 * `docker` (for tests)
@@ -25,7 +29,7 @@ prepare context
       docker pull busybox
       docker pull panubo/vsftpd
 
-## Test
+### Test
 
 Pour tester le script de backup.
 
