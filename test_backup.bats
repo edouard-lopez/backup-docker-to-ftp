@@ -43,7 +43,7 @@ log() {
   volumes_unsorted=($output)
   IFS=$'\n' volumes=($(sort <<<"${volumes_unsorted[*]}"))
 
-  [[ ${#volumes[@]} == 2 ]]
+  (( ${#volumes[@]} == 2 ))
   [[ ${volumes[0]} == "/tmp/directory-a" ]]
 
   remove_container
