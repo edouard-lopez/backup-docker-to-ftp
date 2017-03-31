@@ -17,8 +17,8 @@ create_archive() {
   files="$(get_volumes "$container_name")"
   filepath="/tmp/$container_name.data-$(date '+%Y-%m-%d').tar.gz"
 
-  sudo tar --create --gzip --file "$filepath" $files
-  sudo chown "$USER":"$USER" "$filepath"
+  tar --create --gzip --file "$filepath" $files
+  chown "$USER":"$USER" "$filepath"
 
   echo "$filepath"
 }
