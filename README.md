@@ -10,7 +10,7 @@ prepare context
     export FTP_PASSWORD="test"
     export FTP_HOST="backup.server.org"
 
-  Then run the command
+Then run the command
 
     # container_id="1e52f28bb583"
     archive_filepath=$(backup.bash --create $container_id)
@@ -19,18 +19,15 @@ prepare context
 
 ### Install
 
-  todo
+**Requirements:** `curl`.
 
-### Requirement
+    git clone git@github.com:edouard-lopez/backup-docker-to-ftp.git
 
-* `curl`
-* `docker` (for tests)
-
-      docker pull busybox
-      docker pull panubo/vsftpd
 
 ### Test
 
-Pour tester le script de backup.
+**Requirements:** [`bats`](https://github.com/sstephenson/bats).
 
     bats ./test_backup.bats
+
+  :warning:**Note:** `busybox` and `panubo/vsftpd` images will be **–silently– pulled if missing** (takes a few minutes).
