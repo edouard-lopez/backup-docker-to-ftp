@@ -4,18 +4,20 @@
 
 ### Usage
 
-prepare context
+Configure your `credentials.conf`:
 
-    export FTP_USER="johndoe"
-    export FTP_PASSWORD="test"
+    export FTP_USER="my-user"
+    export FTP_PASSWORD="my-password"
     export FTP_HOST="backup.server.org"
+
+Add `name` or `id` of containers you want to `dockers-to-backup.txt`:
+
+    my_project_nginx_1
+    1e52f28bb583
 
 Then run the command
 
-    # container_id="1e52f28bb583"
-    archive_filepath=$(backup.bash --create $container_id)
-    backup.bash --send "$archive_filepath" FTP_HOST
-
+    backup-list.bash
 
 ### Install
 
@@ -31,3 +33,7 @@ Then run the command
     bats ./test_backup.bats
 
   :warning:**Note:** `busybox` and `panubo/vsftpd` images will be **–silently– pulled if missing** (takes a few minutes).
+
+#### Test FTP
+
+You can test by configuring your credentials in `.netrc` and overriding `$HOME` to point to it (see [video](https://asciinema.org/a/ahai3uli13w9l52ywbjc8k0d9)):
