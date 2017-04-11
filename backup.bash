@@ -26,7 +26,9 @@ create_archive() {
 send_archive() {
   local archive_filepath="$1"
   local ftp_host="$2"
-  curl --upload-file "$archive_filepath" "ftp://$ftp_host" --user "$FTP_USER":"$FTP_PASSWORD"
+  curl \
+    --upload-file "$archive_filepath" "ftp://$ftp_host" \
+    --user "$FTP_USER":"$FTP_PASSWORD"
 }
 
 
