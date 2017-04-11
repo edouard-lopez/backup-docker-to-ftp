@@ -5,7 +5,7 @@ export FTP_PASSWORD="test"
 
 remove_container() {
   docker rm --force mock_seafile || true
-  rm /tmp/directory-{a,b}
+  rm --force /tmp/directory-{a,b}
   docker rm --force mock_ftp_server || true
   return 0
 }
