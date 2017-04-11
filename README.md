@@ -4,33 +4,37 @@
 
 ### Usage
 
-Configure your `credentials.conf`:
+**Configure your `credentials.conf`**:
 
-    export FTP_USER="my-user"
-    export FTP_PASSWORD="my-password"
-    export FTP_HOST="backup.server.org"
+```bash
+# credentials.conf
+export FTP_USER="my-user"
+export FTP_PASSWORD="my-password"
+export FTP_HOST="backup.server.org"
+```
 
-Add `name` or `id` of containers you want to `dockers-to-backup.txt`:
+**Append to `dockers-to-backup.txt`** the containers to backup (using their `name` or `id`):
 
     my_project_nginx_1
+    my_project_frontend_1
     1e52f28bb583
 
-Then run the command
+**Launch**
 
-    backup-list.bash
+    $ backup-list.bash
 
 ### Install
 
 **Requirements:** `curl`.
 
-    git clone git@github.com:edouard-lopez/backup-docker-to-ftp.git
+    $ git clone git@github.com:edouard-lopez/backup-docker-to-ftp.git
 
 
 ### Test
 
 **Requirements:** [`bats`](https://github.com/sstephenson/bats).
 
-    bats ./test_backup.bats
+    $ bats ./test_backup.bats
 
   :warning:**Note:** `busybox` and `panubo/vsftpd` images will be **–silently– pulled if missing** (takes a few minutes).
 
