@@ -25,7 +25,11 @@ Add the containers' `name` or `id` you want to backup.
 
 **Launch**
 
-    $ backup-list.bash
+    $ ./backup-list.bash
+
+For more control check out
+
+  $ ./backup.bash --help
 
 ### Install
 

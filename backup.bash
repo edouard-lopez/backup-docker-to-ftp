@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
 help() {
-  echo "Usage: backup.bash [--create|--get-volumes|--help] container_id" >&2
-  echo "Usage: backup.bash --send archive.tar.gz ftp_host" >&2
+  echo "Usage:" >&2
+  echo "    backup.bash [--create|--get-volumes|--help] container_id" >&2
+  echo "    backup.bash --send archive.tar.gz ftp_host" >&2
+  echo "    backup.bash --remove archive.tar.gz" >&2
   exit 2
 }
 
