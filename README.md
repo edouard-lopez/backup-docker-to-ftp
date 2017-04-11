@@ -13,11 +13,15 @@ export FTP_PASSWORD="my-password"
 export FTP_HOST="backup.server.org"
 ```
 
-**Append to `dockers-to-backup.txt`** the containers to backup (using their `name` or `id`):
+**Edit `dockers-to-backup.txt`**
+
+Add the containers' `name` or `id` you want to backup.
 
     my_project_nginx_1
     my_project_frontend_1
     1e52f28bb583
+
+**:bulb: protip:** prefer the `name` as it will make the archive's filename more explicit).
 
 **Launch**
 
