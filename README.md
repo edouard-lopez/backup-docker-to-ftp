@@ -29,7 +29,7 @@ Add the containers' `name` or `id` you want to backup.
 
 ### Install
 
-**Requirements:** `curl`.
+**Requirements:** `docker` ≥ `17.03`, `curl`.
 
     $ git clone git@github.com:edouard-lopez/backup-docker-to-ftp.git
 
