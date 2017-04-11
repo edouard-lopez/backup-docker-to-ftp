@@ -46,7 +46,8 @@ while getopts "$optspec" optchar; do
             help)
               help;;
             *)
-              echo "Error unknown argument.";;
+              echo "Error unknown argument.";
+              exit 127;;
           esac;;
         h)
             help;;
