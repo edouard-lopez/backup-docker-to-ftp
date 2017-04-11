@@ -31,6 +31,10 @@ send_archive() {
     --user "$FTP_USER":"$FTP_PASSWORD"
 }
 
+remove_tmp() {
+  local archive_filepath="$1"
+  rm --force "$archive_filepath"
+}
 
 optspec=":hv-:"
 while getopts "$optspec" optchar; do
@@ -43,6 +47,8 @@ while getopts "$optspec" optchar; do
               send_archive "${@:(-2)}";;
             get-volumes)
               get_volumes "${!#}";;
+            remove)
+              remove_tmp "${!#}";;
             help)
               help;;
             *)

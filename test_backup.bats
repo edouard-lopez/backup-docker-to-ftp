@@ -132,3 +132,16 @@ log() {
   rm "$archive_filepath"
   remove_container
 }
+
+@test "--remove: remove temporary archive" {
+  container_name="mock_seafile"
+  archive_filepath="/tmp/$container_name.data-$(date '+%Y-%m-%d').tar.gz"
+  touch "$archive_filepath"
+
+  run ./backup.bash --remove "$archive_filepath"
+
+  [[ $status == 0 ]]
+  [[ ! -e $archive_filepath ]]
+
+  remove_container
+}
