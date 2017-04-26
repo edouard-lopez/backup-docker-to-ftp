@@ -29,7 +29,7 @@ Add the containers' `name` or `id` you want to backup.
 
 For more control check out
 
-  $ ./backup.bash --help
+    $ ./backup.bash --help
 
 ### Install
 
