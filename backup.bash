@@ -2,6 +2,10 @@
 # USAGE
 #   ./backup.bash --help
 
+scriptDir=$(dirname "$(readlink -f "$0")")
+# shellcheck source=./credentials.conf
+source $scriptDir/credentials.conf
+
 help() {
   echo "Usage:" >&2
   echo "    backup.bash [--create|--get-volumes|--help] container_id" >&2

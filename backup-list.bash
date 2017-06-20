@@ -4,7 +4,7 @@
 
 scriptDir=$(dirname "$(readlink -f "$0")")
 # shellcheck source=./credentials.conf
-source ${1:-$scriptDir/credentials.conf}
+source $scriptDir/credentials.conf
 
 while IFS='' read -r container_id || [[ -n "$container_id" ]]; do
   archive_filepath=$($scriptDir/backup.bash --create $container_id)
