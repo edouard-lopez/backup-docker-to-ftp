@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# USAGE
+#   ./backup.bash --help
 
 help() {
   echo "Usage:" >&2

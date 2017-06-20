@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # USAGE
-#   PATH=$PATH:./ backup-to-online.net.bash
+#   ./backup-list.bash
 
 scriptDir=$(dirname "$(readlink -f "$0")")
 # shellcheck source=./credentials.conf
