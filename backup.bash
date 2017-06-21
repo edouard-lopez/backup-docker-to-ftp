@@ -2,9 +2,11 @@
 # USAGE
 #   ./backup.bash --help
 
-scriptDir=$(dirname "$(readlink -f "$0")")
-# shellcheck source=./credentials.conf
-source $scriptDir/credentials.conf
+if [[ -z $FTP_USER && -z $FTP_PASSWORD ]]; then
+  scriptDir=$(dirname "$(readlink -f "$0")")
+  # shellcheck source=./credentials.conf
+  source $scriptDir/credentials.conf
+fi
 
 help() {
   echo "Usage:" >&2
